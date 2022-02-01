@@ -31,7 +31,6 @@ if __name__ == "__main__":
 
     WIDTH = 650
     HEIGHT = 450
-    FPS = 15
 
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     clock = pygame.time.Clock()
@@ -45,7 +44,7 @@ if __name__ == "__main__":
 
     running = True
     while running:
-        changed_scale = FPS
+        changed_scale = False
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -66,6 +65,6 @@ if __name__ == "__main__":
 
             image = pygame.image.load(content)
             image = pygame.transform.scale(image, (WIDTH, HEIGHT))
-            screen.blit(image, image.get_rect())
-            pygame.display.flip()
-            clock.tick(FPS)
+        screen.blit(image, image.get_rect())
+        pygame.display.flip()
+
