@@ -21,7 +21,8 @@ def make_params(coords, scale):
     params = {
         "ll": coords,
         "z": 10,
-        "l": "map"
+        "l": "map",
+        "size": "650,450"
     }
     return params
 
@@ -36,8 +37,8 @@ def get_image(params):
 if __name__ == "__main__":
     pygame.init()
 
-    WIDTH = 360
-    HEIGHT = 480
+    WIDTH = 650
+    HEIGHT = 450
     FPS = 30
 
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
