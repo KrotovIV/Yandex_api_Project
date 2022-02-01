@@ -12,9 +12,9 @@ def input_params():
 def make_params(coords, scale):
     params = {
         "ll": coords,
-        "z": 10,
+        "z": scale,
         "l": "map",
-        "size": scale
+        "size": "650,450"
     }
     return params
 
