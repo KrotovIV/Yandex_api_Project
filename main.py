@@ -22,7 +22,7 @@ def make_params(coords, scale):
         "ll": coords,
         "z": 10,
         "l": "map",
-        "size": "650,450"
+        "size": scale
     }
     return params
 
