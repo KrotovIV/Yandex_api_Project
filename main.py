@@ -12,9 +12,9 @@ clock = pygame.time.Clock()
 
 
 def input_params():
-    coords = input()
-    scale = input()
-    return coords, scale
+    with open('input.txt') as f:
+        spisok = list(map(lambda x: x.strip(), f.readlines()))
+    return tuple(spisok)
 
 def make_params(coords, scale):
     params = {
