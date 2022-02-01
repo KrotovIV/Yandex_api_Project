@@ -31,7 +31,7 @@ if __name__ == "__main__":
 
     WIDTH = 650
     HEIGHT = 450
-    FPS = 30
+    FPS = 15
 
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     clock = pygame.time.Clock()
