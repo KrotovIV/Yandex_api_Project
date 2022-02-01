@@ -49,6 +49,7 @@ if __name__ == "__main__":
     content = get_image(params)
 
     image = pygame.image.load(content)
+    image = pygame.transform.scale(image, (WIDTH, HEIGHT))
 
     running = True
     while running:
