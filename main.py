@@ -45,6 +45,7 @@ if __name__ == "__main__":
 
     running = True
     while running:
+        changed_scale = FPS
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -52,17 +53,19 @@ if __name__ == "__main__":
             if keys[pygame.K_PAGEUP]:
                 if int(scale) < 23:
                     scale = str(int(scale) + 1)
+                    changed_scale = True
             if keys[pygame.K_PAGEDOWN]:
                 if int(scale) > 0:
                     scale = str(int(scale) - 1)
+                    changed_scale = True
 
             print(scale)
+        if changed_scale:
+            params = make_params(coords, scale)
+            content = get_image(params)
 
-        params = make_params(coords, scale)
-        content = get_image(params)
-
-        image = pygame.image.load(content)
-        image = pygame.transform.scale(image, (WIDTH, HEIGHT))
-        screen.blit(image, image.get_rect())
-        pygame.display.flip()
-        clock.tick(FPS)
+            image = pygame.image.load(content)
+            image = pygame.transform.scale(image, (WIDTH, HEIGHT))
+            screen.blit(image, image.get_rect())
+            pygame.display.flip()
+            clock.tick(FPS)
