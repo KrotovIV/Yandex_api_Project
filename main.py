@@ -50,9 +50,13 @@ if __name__ == "__main__":
                 running = False
             keys = pygame.key.get_pressed()
             if keys[pygame.K_PAGEUP]:
-                scale = str(int(scale) + 1)
-            if keys[pygame.KEYDOWN]:
-                scale = str(int(scale) - 1)
+                if int(scale) < 23:
+                    scale = str(int(scale) + 1)
+            if keys[pygame.K_PAGEDOWN]:
+                if int(scale) > 0:
+                    scale = str(int(scale) - 1)
+
+            print(scale)
 
         params = make_params(coords, scale)
         content = get_image(params)
@@ -61,3 +65,4 @@ if __name__ == "__main__":
         image = pygame.transform.scale(image, (WIDTH, HEIGHT))
         screen.blit(image, image.get_rect())
         pygame.display.flip()
+        clock.tick(FPS)
