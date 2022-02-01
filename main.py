@@ -16,18 +16,22 @@ def input_params():
         spisok = list(map(lambda x: x.strip(), f.readlines()))
     return tuple(spisok)
 
+
 def make_params(coords, scale):
     params = {
         "ll": coords,
-        "spn": scale,
+        "z": 10,
         "l": "map"
     }
     return params
 
+
 def get_image(params):
     api = "http://static-maps.yandex.ru/1.x/"
     response = requests.get(api, params=params)
-    return io.BytesIO(response.content)
+    img = io.BytesIO(response.content)
+    return img
+
 
 if __name__ == "__main__":
     pygame.init()
@@ -44,7 +48,6 @@ if __name__ == "__main__":
     content = get_image(params)
 
     image = pygame.image.load(content)
-
 
     running = True
     while running:
