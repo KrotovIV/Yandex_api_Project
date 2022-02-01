@@ -2,14 +2,6 @@ import pygame
 import io
 import requests
 
-WIDTH = 360
-HEIGHT = 480
-FPS = 30
-
-pygame.init()
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
-clock = pygame.time.Clock()
-
 
 def input_params():
     with open('input.txt') as f:
