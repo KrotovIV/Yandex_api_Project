@@ -9,11 +9,11 @@ def input_params():
     return coords, scale
 
 
-def make_params(coords, scale):
+def make_params(coords, scale, type):
     params = {
         "ll": coords,
         "z": scale,
-        "l": "map",
+        "l": type,
         "size": "650,450"
     }
     return params
@@ -32,6 +32,7 @@ if __name__ == "__main__":
     WIDTH = 650
     HEIGHT = 450
     step = 0.008
+    typee = 'map'
 
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     clock = pygame.time.Clock()
@@ -39,7 +40,7 @@ if __name__ == "__main__":
     coords, scale = input_params()
     coords1 = coords.split(',')
     coords1 = list(map(float, coords1))
-    params = make_params(coords, scale)
+    params = make_params(coords, scale, typee)
     content = get_image(params)
 
     image = pygame.image.load(content)
@@ -72,16 +73,20 @@ if __name__ == "__main__":
             if keys[pygame.K_s] and coords1[1] > -85:
                 coords1[1] -= step / (2 * int(scale) ** 0.5)
                 changed_scale = True
-
+            if keys[pygame.K_m]:
+                typee = 'map'
+            elif keys[pygame.K_c]:
+                typee = 'sat'
+            elif keys[pygame.K_g]:
+                typee = 'sat,skl'
             print(scale)
             print(coords1)
         if changed_scale:
             coords2 = ','.join(list(map(str, coords1)))
-            params = make_params(coords2, scale)
+            params = make_params(coords2, scale, typee)
             content = get_image(params)
 
             image = pygame.image.load(content)
             image = pygame.transform.scale(image, (WIDTH, HEIGHT))
         screen.blit(image, image.get_rect())
         pygame.display.flip()
-
