@@ -14,7 +14,8 @@ def make_params(coords, scale):
         "ll": coords,
         "z": scale,
         "l": "map",
-        "size": "650,450"
+        "size": "650,450",
+        "pt": "0.000000,55.000000~-0.390625,55.000000~0.390625,55.000000~0.000000,55.186035~0.000000,54.813965"
     }
     return params
 
@@ -31,14 +32,11 @@ if __name__ == "__main__":
 
     WIDTH = 650
     HEIGHT = 450
-    step = 0.008
 
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     clock = pygame.time.Clock()
 
     coords, scale = input_params()
-    coords1 = coords.split(',')
-    coords1 = list(map(float, coords1))
     params = make_params(coords, scale)
     content = get_image(params)
 
@@ -47,41 +45,48 @@ if __name__ == "__main__":
 
     running = True
     while running:
-        changed_scale = False
+        changed = False
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
             keys = pygame.key.get_pressed()
-            if keys[pygame.K_UP]:
+            if keys[pygame.K_PAGEUP]:
                 if int(scale) < 23:
                     scale = str(int(scale) + 1)
-                    changed_scale = True
-            if keys[pygame.K_DOWN]:
+                    changed = True
+            if keys[pygame.K_PAGEDOWN]:
                 if int(scale) > 0:
                     scale = str(int(scale) - 1)
-                    changed_scale = True
-            if keys[pygame.K_a]:
-                coords1[0] -= step / (2 * int(scale) ** 0.5)
-                changed_scale = True
-            if keys[pygame.K_d]:
-                coords1[0] += step / (2 * int(scale) ** 0.5)
-                changed_scale = True
-            if keys[pygame.K_w] and coords1[1] < 85:
-                coords1[1] += step / (2 * int(scale) ** 0.5)
-                changed_scale = True
-            if keys[pygame.K_s] and coords1[1] > -85:
-                coords1[1] -= step / (2 * int(scale) ** 0.5)
-                changed_scale = True
-
-            print(scale)
-            print(coords1)
-        if changed_scale:
-            coords2 = ','.join(list(map(str, coords1)))
-            params = make_params(coords2, scale)
+                    changed = True
+            if keys[pygame.K_LEFT]:
+                coords = ",".join([str(float(coords.split(',')[0]) - 800 / 2 ** int(scale)), coords.split(',')[1]])
+                changed = True
+                if abs(float(coords.split(',')[0])) > 180:
+                    coords = ",".join([str(float(coords.split(',')[0]) + 800 / 2 ** int(scale)), coords.split(',')[1]])
+                    changed = False
+            if keys[pygame.K_RIGHT]:
+                coords = ",".join([str(float(coords.split(',')[0]) + 800 / 2 ** int(scale)), coords.split(',')[1]])
+                changed = True
+                if abs(float(coords.split(',')[0])) > 180:
+                    coords = ",".join([str(float(coords.split(',')[0]) - 800 / 2 ** int(scale)), coords.split(',')[1]])
+                    changed = False
+            if keys[pygame.K_UP]:
+                coords = ",".join([coords.split(',')[0], str(float(coords.split(',')[1]) + 381 / 2 ** int(scale))])
+                changed = True
+                if abs(float(coords.split(',')[1])) > 90:
+                    coords = ",".join([coords.split(',')[0], str(float(coords.split(',')[1]) - 381 / 2 ** int(scale))])
+                    changed = False
+            if keys[pygame.K_DOWN]:
+                coords = ",".join([coords.split(',')[0], str(float(coords.split(',')[1]) - 381 / 2 ** int(scale))])
+                changed = True
+                if abs(float(coords.split(',')[1])) > 90:
+                    coords = ",".join([coords.split(',')[0], str(float(coords.split(',')[1]) + 381 / 2 ** int(scale))])
+                    changed = False
+        if changed:
+            params = make_params(coords, scale)
             content = get_image(params)
 
             image = pygame.image.load(content)
             image = pygame.transform.scale(image, (WIDTH, HEIGHT))
         screen.blit(image, image.get_rect())
         pygame.display.flip()
-
