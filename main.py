@@ -5,17 +5,16 @@ import requests
 
 def input_params():
     with open('input.txt') as f:
-        coords, scale = list(map(lambda x: x.strip(), f.readlines()))
-    return coords, scale
+        coords, scale, type = list(map(lambda x: x.strip(), f.readlines()))
+    return coords, scale, type
 
 
-def make_params(coords, scale):
+def make_params(coords, scale, type):
     params = {
         "ll": coords,
         "z": scale,
-        "l": "map",
+        "l": type,
         "size": "650,450",
-        "pt": "0.000000,55.000000~-0.390625,55.000000~0.390625,55.000000~0.000000,55.186035~0.000000,54.813965"
     }
     return params
 
@@ -36,8 +35,8 @@ if __name__ == "__main__":
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     clock = pygame.time.Clock()
 
-    coords, scale = input_params()
-    params = make_params(coords, scale)
+    coords, scale, type = input_params()
+    params = make_params(coords, scale, type)
     content = get_image(params)
 
     image = pygame.image.load(content)
@@ -54,6 +53,7 @@ if __name__ == "__main__":
                 if int(scale) < 23:
                     scale = str(int(scale) + 1)
                     changed = True
+                    print(scale)
             if keys[pygame.K_PAGEDOWN]:
                 if int(scale) > 0:
                     scale = str(int(scale) - 1)
@@ -82,8 +82,18 @@ if __name__ == "__main__":
                 if abs(float(coords.split(',')[1])) > 90:
                     coords = ",".join([coords.split(',')[0], str(float(coords.split(',')[1]) + 381 / 2 ** int(scale))])
                     changed = False
+            if keys[pygame.K_z]:
+                types = ["map", "sat", "sat,skl"]
+                ind = types.index(type)
+                if ind == 2:
+                    ind = 0
+                else:
+                    ind += 1
+                type = types[ind]
+                changed = True
+
         if changed:
-            params = make_params(coords, scale)
+            params = make_params(coords, scale, type)
             content = get_image(params)
 
             image = pygame.image.load(content)
